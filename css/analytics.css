@@ -1,0 +1,26 @@
+body {
+  background: linear-gradient(135deg, #0d0f2d, #1b1e44);
+  color: #fff;
+}
+.navbar {
+  background: rgba(13, 15, 45, 0.9);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+}
+.navbar-brand { color: #4ea1ff !important; font-weight: 700; }
+.card {
+  background-color: #a0c4ff;
+  color: #0d0f2d;
+  border-radius: 15px;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
+}
+.stat-card {
+  text-align: center;
+  padding: 25px;
+  transition: 0.3s;
+}
+.stat-card:hover {
+  transform: scale(1.05);
+  background-color: #bcd9ff;
+}
+.stat-card h4 { color: #307ae2; }
+.stat-card p { font-size: 1.5rem; font-weight: bold; }
