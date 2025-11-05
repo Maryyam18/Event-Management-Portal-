@@ -1,3 +1,6 @@
+ 
+<?php include 'modal.php'; ?>
+<?php include 'dbconnection.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,53 +34,47 @@
     </tr>
   </thead>
   <tbody>
-    <tr>
-  <th scope="row">1</th>
-  <td>Tech Innovators Summit</td>
-  <td>A gathering of tech leaders to discuss future innovations.</td>
-  <td>Lahore Expo Center</td>
-  <td>2025-12-10 10:00 AM</td>
-  <td>250</td>
-  <td>$5,000</td>
-  <td>Approved</td>
-  <td>2025-10-20</td>
-   <td>
-        <a data-bs-toggle="modal" data-bs-target="#exampleModal"   onclick="openEditModal('Tech Conference', 'Innovation and AI', 'Lahore', '10:00 AM', '200', 5000)" class="text-primary me-2"><i class="bi bi-pencil-square"></i></a>
-        <a href="#" class="text-danger"  data-bs-toggle="modal" data-bs-target="#delmodal" ><i class="bi bi-trash"></i></a>
-      </td>
-</tr>
 
-<tr>
-  <th scope="row">2</th>
-  <td>Startup Pitch Night</td>
-  <td>Entrepreneurs pitch their startups to investors and mentors.</td>
-  <td>Karachi Innovation Hub</td>
-  <td>2025-11-25 06:00 PM</td>
-  <td>100</td>
-  <td>$2,000</td>
-  <td>Pending</td>
-  <td>2025-10-28</td>
-   <td>
-        <a href="#" class="text-primary me-2"><i class="bi bi-pencil-square"></i></a>
-        <a href="#" class="text-danger"><i class="bi bi-trash"></i></a>
-      </td>
-</tr>
+   <?php 
+    $query = "SELECT * FROM events ORDER BY event_id DESC;";
+     $stmt = $conn->prepare($query);
+          $stmt->execute();
+          $events = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-<tr>
-  <th scope="row">3</th>
-  <td>AI in Healthcare Conference</td>
-  <td>Exploring the role of AI and data in transforming healthcare systems.</td>
-  <td>Islamabad Tech Park</td>
-  <td>2026-01-15 09:30 AM</td>
-  <td>300</td>
-  <td>$7,500</td>
-  <td>Approved</td>
-  <td>2025-10-30</td>
-   <td>
-        <a href="#" class="text-primary me-2"><i class="bi bi-pencil-square"></i></a>
-        <a href="#" class="text-danger"><i class="bi bi-trash"></i></a>
-      </td>
-</tr>
+      $i = 1;
+          foreach ($events as $row) {
+              echo "<tr>
+                  <td>{$i}</td>
+                  <td>" . htmlspecialchars($row['title']) . "</td>
+                  <td>" . htmlspecialchars($row['description']) . "</td>
+                  <td>" . htmlspecialchars($row['location']) . "</td>
+                  <td>" . htmlspecialchars($row['event_time']) . "</td>
+                  <td>" . htmlspecialchars($row['people_limit']) . "</td>
+                  <td>" . htmlspecialchars($row['budget']) . "</td>
+                  <td>" . htmlspecialchars($row['status']) . "</td>
+                  <td>" . htmlspecialchars($row['created_at']) . "</td>
+                  <td>
+                      <a href='#' class='text-primary me-2' data-bs-toggle='modal' data-bs-target='#EditModal'
+                          onclick=\"openEditModal(
+                              {$row['event_id']},
+                              '" . addslashes($row['title']) . "',
+                              '" . addslashes($row['description']) . "',
+                              '" . addslashes($row['location']) . "',
+                              '" . addslashes($row['event_time']) . "',
+                              '" . addslashes($row['people_limit']) . "',
+                              '" . addslashes($row['budget']) . "',
+                          )\">
+                          <i class='bi bi-pencil-square'></i></a>
+                      <a href='#' class='text-danger' data-bs-toggle='modal' data-bs-target='#delmodal'  onclick='setDeleteModal(".$row['event_id'].")'><i class='bi bi-trash'></i></a>
+                  </td>
+              </tr>";
+              $i++;
+
+             /// 
+          }
+
+          
+      ?>
   </tbody>
 </table>
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
@@ -87,5 +84,3 @@
 
 </body>
 </html>
-
-<?php include 'modal.php'; ?>
