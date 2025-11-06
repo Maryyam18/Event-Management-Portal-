@@ -1,0 +1,28 @@
+body {
+  background: linear-gradient(135deg, #0d0f2d, #1b1e44);
+  color: #fff;
+}
+.navbar {
+  background: rgba(13, 15, 45, 0.9);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+}
+.navbar-brand { color: #4ea1ff !important; font-weight: 700; }
+.card {
+  background-color: #a0c4ff;
+  color: #0d0f2d;
+  border-radius: 15px;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
+}
+.table thead {
+  background-color: #307ae2 !important;
+  color: white !important;
+}
+.btn-approve {
+  background-color: #28a745;
+  border: none;
+}
+.btn-reject {
+  background-color: #e04b4b;
+  border: none;
+}
+

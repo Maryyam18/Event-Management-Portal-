@@ -13,7 +13,8 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">  
 </head>
 <body>
-   
+  
+    <?php include 'sidebarmanager.php'; ?>
          <tr class="table-info">
              <p> Events  <p>
   <button type="button" class="btn btn-success position-absolute top-0 end-0"  data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="openAddModal()" >Add</button>

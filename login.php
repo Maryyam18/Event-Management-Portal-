@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'db_connect.php';
+include 'dbconnection.php'; 
 
 // Variables & Data Types: Arrays
 $errors = [];
@@ -26,7 +26,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $_SESSION['user_id']   = $user['user_id'];
             $_SESSION['full_name'] = $user['full_name'];
             $_SESSION['role_id']   = $user['role_id'];
-            header("Location: user_dashboard.php");
+            if ($user['role_id'] == 1) {
+    header("Location: admin_dashboard.php");
+} else if($user['role_id'] == 2) {
+    header("Location: manager_dashboard.php");
+}
+else if($user['role_id'] == 3)
+{
+  header("Location: user_dashboard.php");
+}
+
+          
             exit;
         } else {
             $errors[] = "Invalid credentials.";
