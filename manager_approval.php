@@ -1,8 +1,6 @@
 
 
-<?php include 'userregistrations.php'; 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);?>
+<?php include 'userregistrations.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -43,7 +41,7 @@ ini_set('display_errors', 1);?>
 
 
 
-    $query = "select users.full_name, registrations.event_id,registrations.status,events.title from registrations join users on registrations.user_id= users.user_id join events on events.event_id=registrations.event_id";
+    $query = "select users.full_name,registrations.registration_id , registrations.event_id,registrations.status,events.title from registrations join users on registrations.user_id= users.user_id join events on events.event_id=registrations.event_id";
      $stmt = $conn->prepare($query);
           $stmt->execute();
           $events = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -71,19 +69,20 @@ ini_set('display_errors', 1);?>
     // Action buttons
     if ($row['status'] == 'pending') {
         echo "<form method='POST' class='d-inline-block me-2'>
-            <input type='hidden' name='event_id' value='" . $row['event_id'] . "'>
+            <input type='hidden' name='event_id' value='" . $row['registration_id'] . "'>
             <button type='submit' name='action' value='approve' class='btn btn-success btn-sm'>Approve</button>
           </form>
           <form method='POST' class='d-inline-block'>
-            <input type='hidden' name='event_id' value='" . $row['event_id'] . "'>
+            <input type='hidden' name='event_id' value='" . $row['registration_id'] . "'>
             <button type='submit' name='action' value='reject' class='btn btn-danger btn-sm'>Reject</button>
           </form>";
     }else {
     echo "<em>Action Taken</em>";
 }
+   $i++;    
           }
 
-          
+      
       ?>
   </tbody>
      

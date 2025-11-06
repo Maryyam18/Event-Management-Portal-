@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && isset($_
 function approve($event_id) {
     global $conn;
     try {
-        $stmt = $conn->prepare("UPDATE registrations SET status='approved' WHERE event_id:event_id");
+        $stmt = $conn->prepare("UPDATE registrations SET status='approved' WHERE registration_id = :event_id");
         $stmt->execute(['event_id' => $event_id]);
         return true;
     } catch(PDOException $e) {
@@ -37,7 +37,7 @@ function approve($event_id) {
 function reject($event_id) {
     global $conn;
     try {
-        $stmt = $conn->prepare("UPDATE registrations SET status='rejected' WHERE event_id:event_id");
+        $stmt = $conn->prepare("UPDATE registrations SET status='rejected' WHERE registration_id  = :event_id");
         $stmt->execute(['event_id' => $event_id]);
         return true;
     } catch(PDOException $e) {
