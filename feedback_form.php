@@ -2,17 +2,15 @@
 session_start();
 include 'db_connect.php';
 if (!isset($_SESSION['user_id']) || $_SESSION['role_id'] != 3) die("Unauthorized");
-
 $event_id = (int)$_GET['event_id'];
-$user_id  = $_SESSION['user_id'];
-
+$user_id = $_SESSION['user_id'];
 $stmt = $conn->prepare("SELECT e.event_time FROM events e
                         JOIN registrations r ON e.event_id = r.event_id
                         WHERE e.event_id = ? AND r.user_id = ? AND r.status = 'approved'");
 $stmt->execute([$event_id, $user_id]);
 $ev = $stmt->fetch();
-if (!$ev || strtotime($ev['event_time']) >= time()) die("Cannot give feedback yet.");
-
+if (!$ev) die("You are not registered for this event or it is not approved.");
+$event_passed = strtotime($ev['event_time']) < time();
 $stmt = $conn->prepare("SELECT feedback_id FROM feedback WHERE event_id = ? AND user_id = ?");
 $stmt->execute([$event_id, $user_id]);
 $already = $stmt->fetch();
@@ -66,6 +64,8 @@ $already = $stmt->fetch();
 <body>
     <?php if($already): ?>
         <p class="success">You have already submitted feedback for this event.</p>
+    <?php elseif(!$event_passed): ?>
+        <p class="text-red-600">Cannot give feedback yet. Event has not occurred.</p>
     <?php else: ?>
         <h3 class="text-xl font-semibold mb-4">Give Feedback</h3>
         <form method="POST" action="user_dashboard.php">

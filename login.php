@@ -13,20 +13,24 @@ function sanitizeInput($data) {
 // Control Statements: Check form submission
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $full_name = sanitizeInput($_POST['full_name']);
-    $password  = $_POST['password'];
-
+    $password = $_POST['password'];
     if (empty($full_name) || empty($password)) {
         $errors[] = "Both fields required.";
     } else {
         $stmt = $conn->prepare("SELECT user_id, full_name, password, role_id FROM users WHERE full_name = ?");
         $stmt->execute([$full_name]);
         $user = $stmt->fetch();
-
         if ($user && password_verify($password, $user['password'])) {
-            $_SESSION['user_id']   = $user['user_id'];
+            $_SESSION['user_id'] = $user['user_id'];
             $_SESSION['full_name'] = $user['full_name'];
-            $_SESSION['role_id']   = $user['role_id'];
-            header("Location: user_dashboard.php");
+            $_SESSION['role_id'] = $user['role_id'];
+            if ($user['role_id'] == 1) {
+                header("Location: admin_dashboard.php"); // Admin page
+            } elseif ($user['role_id'] == 2) {
+                header("Location: index.php"); // Manager dashboard
+            } else {
+                header("Location: user_dashboard.php"); // User dashboard
+            }
             exit;
         } else {
             $errors[] = "Invalid credentials.";
@@ -133,9 +137,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             .form-input { padding: 0.75rem; }
             .btn-primary { padding: 0.75rem; }
         }
-        /* Updated label color to dark blue */
         label {
-            color: #1e40af; /* Dark blue for better contrast */
+            color: #1e40af;
         }
     </style>
 </head>
@@ -147,15 +150,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <h2>Welcome Back</h2>
             <p class="text-gray-300">Sign in to your Event Management Portal</p>
         </div>
-
         <?php if (isset($_SESSION['msg'])): ?>
             <div class="success"><?= $_SESSION['msg']; unset($_SESSION['msg']); ?></div>
         <?php endif; ?>
-
         <?php if (!empty($errors)): ?>
             <div class="error"><?= implode('<br>', $errors) ?></div>
         <?php endif; ?>
-
         <form method="POST" class="space-y-5">
             <div>
                 <label class="block font-medium flex items-center"><i class="fas fa-user icon"></i> Full Name</label>
